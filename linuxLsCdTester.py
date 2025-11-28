@@ -1,36 +1,53 @@
 import tkinter as tk
 import random
 
-currentLocal = 0 #0 is root terminal, increased num = deeper in "files"
 innitDirects = {}
-numDirectsToInnit = random.randint(3, 6)
+numDirectsToInnit = random.randint(2, 3)
 
-randDirectoryList = ["Desktop", "Pictures", "Documents", "Videos", "Downloads", "OS"]
+docDirectNameList = ["a","b","c","d","e","f","g"] 
+imagDirectNameList = []
+vidDirectNameList = []
+# ^THESE ARE NOT FILE NAMES!! THESE ARE FOLDER-ESQ NAMES
 
 class Node: #USE SELF ON ALL INSTANCE METHODS
     def __init__(self, nodeName:str):
         self.nodeName = nodeName
         self.children = []
+        self.treePos = 0
     
-    def addChild(self, name):
-        self.children.append(name)
+    def setTreePos(self, num:int):
+        self.treePos = num
+
+    def addChildren(self, dat):
+        self.children.extend(dat)
+
+    def checkForNodeChild(self):
+        for i in range(0, len(self.children)):
+            if isinstance(self.children[i], Node):
+                print(self.children[i].nodeName)
+                
+    def findChild(self, targetChildName):
+        for i in range(0, len(self.children)):
+            if self.children[i].nodeName == targetChildName:
+                return self.children[i]
     
     def __str__(self):
         return ("Node name: " + self.nodeName + ", Node contents: " + str(self.children))
     def __repr__(self):
         return (self.nodeName+"Node")
 
-def indentifyNestedNodes(mainNode:Node):
-    for i in range(0, len(mainNode.children)):
-        if isinstance(mainNode.children[i],Node):
-            print(mainNode.children[i].nodeName)
+def populateNode(nodeToAddD:Node, directList:list, numNodesToAdd):
+    tempAddList = []
+    for i in range(0, numNodesToAdd):
+        tempAddList.append(directList[i])
+    nodeToAddD.addChildren(tempAddList)
 
-def startInstance(numDirects:int):
+def createRootNodes():
     rootNode = Node("root")
-    for i in range(0, numDirects):
-        randName = randDirectoryList[i]
-        nodeToAdd = Node(randName)
-        rootNode.addChild(nodeToAdd)
-    print(rootNode)
+    tempNodes = [Node("Documents"), Node("Pictures"), Node("Videos")]
+    rootNode.addChildren(tempNodes)
+    return rootNode
 
-startInstance(numDirectsToInnit)
+instRootNodes = createRootNodes()
+populateNode(instRootNodes.findChild("Documents"), docDirectNameList, 2)
+print(instRootNodes.findChild("Documents"))
