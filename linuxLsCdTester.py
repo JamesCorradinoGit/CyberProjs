@@ -1,6 +1,8 @@
 import tkinter as tk
 import random
 
+tkRoot = tk.Tk()
+#region Functionality
 #region Nodes
 class Node: #USE SELF ON ALL INSTANCE METHODS
     def __init__(self, nodeName:str):
@@ -52,7 +54,6 @@ def createRootNodes():
     populateNode(rootNode.getChild("Videos"), vidDirectNameList, random.randint(2,6))
     return rootNode
 #endregion
-
 termName = "root"
 instRootNodes = createRootNodes()
 currentNode = instRootNodes
@@ -60,7 +61,7 @@ currentNode = instRootNodes
 def lsSim(nodeToList:Node):
     print(nodeToList.children)
 
-def cdSim(rootNode:Node, input:str):
+def cdSim(rootNode:Node, input:str): #INTENDED TO ONLY USE TWO DIRECTORIES (eg. root/Documents/Homework is the furthest you can go) 
     global termName
     global currentNode
     tempTermName = ""
@@ -78,6 +79,7 @@ def cdSim(rootNode:Node, input:str):
         termName = tempTermName
     else:
         print("Please route to a valid directory.")
+#endregion
 
 cdSim(instRootNodes, "Documents")
 lsSim(currentNode)
