@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 
-tkRoot = tk.Tk()
+#tkRoot = tk.Tk()
 #region Functionality
 #region Nodes
 class Node: #USE SELF ON ALL INSTANCE METHODS
@@ -58,6 +58,15 @@ termName = "root"
 instRootNodes = createRootNodes()
 currentNode = instRootNodes
 
+def createTarget(rootNode:Node): #TODO complete ts function
+    targetToReturn = "root"
+    randParentDirect:Node = rootNode.children[random.randint(0,2)]
+    targetToReturn += "/"+str(randParentDirect.nodeName)
+    
+    randChildDirect:Node = randParentDirect.children[random.randint(0, len(randParentDirect.children)-1)]
+    targetToReturn += "/"+str(randChildDirect.nodeName)
+    return(targetToReturn)
+
 def lsSim(nodeToList:Node):
     print(nodeToList.children)
 
@@ -86,3 +95,5 @@ lsSim(currentNode)
 cdSim(instRootNodes, "Homework")
 cdSim(instRootNodes, "..")
 print(termName)
+
+createTarget(instRootNodes)
