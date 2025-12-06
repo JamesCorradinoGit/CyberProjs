@@ -1,7 +1,28 @@
 import tkinter as tk
 import random
 
-#tkRoot = tk.Tk()
+termName = "root"
+
+#region tk
+rootTk = tk.Tk()
+rootTk.config(background="grey8") #TODO finish ui
+rootTk.geometry("400x200")
+
+def submitPrompt(event):
+    inputtedStr = commandPrompt.get()
+    if inputtedStr.startswith("cd"):
+        improvImputtedStr = inputtedStr[inputtedStr.find("cd")+3:]
+        cdSim(instRootNodes, improvImputtedStr)
+    elif inputtedStr.startswith("ls"):
+        lsSim(currentNode)
+    event.widget.delete(0, tk.END) #TODO check for cd or ls and the input
+
+directNameLabel = tk.Label(rootTk, text=termName, font=("Courier New", 10, "bold"), fg="white", bg="grey8").place(x=15, y=10)
+commandPrompt = tk.Entry(rootTk, width=45, bg="grey8", font=("Courier New", 10, "bold"), fg="white", highlightthickness=1, highlightcolor="white", highlightbackground="white", insertbackground="white")
+commandPrompt.bind("<Return>", submitPrompt)
+commandPrompt.place(x=15, y=33)
+#endregion
+
 #region Functionality
 #region Nodes
 class Node: #USE SELF ON ALL INSTANCE METHODS
@@ -20,8 +41,7 @@ class Node: #USE SELF ON ALL INSTANCE METHODS
         for i in range(0, len(self.children)):
             if self.children[i].nodeName == targetChildName:
                 return True
-            else:
-                return False
+        return False
                 
     def getChild(self, targetChildName): #optimize with index command?
         for i in range(0, len(self.children)):
@@ -54,11 +74,10 @@ def createRootNodes():
     populateNode(rootNode.getChild("Videos"), vidDirectNameList, random.randint(2,6))
     return rootNode
 #endregion
-termName = "root"
 instRootNodes = createRootNodes()
 currentNode = instRootNodes
 
-def createTarget(rootNode:Node): #TODO complete ts function
+def createTarget(rootNode:Node): 
     targetToReturn = "root"
     randParentDirect:Node = rootNode.children[random.randint(0,2)]
     targetToReturn += "/"+str(randParentDirect.nodeName)
@@ -67,9 +86,16 @@ def createTarget(rootNode:Node): #TODO complete ts function
     targetToReturn += "/"+str(randChildDirect.nodeName)
     return(targetToReturn)
 
-def lsSim(nodeToList:Node):
-    print(nodeToList.children)
+def checkTarget(targetStr:str):
+    if termName == targetStr:
+        return True
+    else:
+        return False
 
+def lsSim(nodeToList:Node):
+    if type(nodeToList) is Node:
+        print(nodeToList.children)
+#TODO fix cd to root
 def cdSim(rootNode:Node, input:str): #INTENDED TO ONLY USE TWO DIRECTORIES (eg. root/Documents/Homework is the furthest you can go) 
     global termName
     global currentNode
@@ -90,10 +116,5 @@ def cdSim(rootNode:Node, input:str): #INTENDED TO ONLY USE TWO DIRECTORIES (eg. 
         print("Please route to a valid directory.")
 #endregion
 
-cdSim(instRootNodes, "Documents")
-lsSim(currentNode)
-cdSim(instRootNodes, "Homework")
-cdSim(instRootNodes, "..")
-print(termName)
-
 createTarget(instRootNodes)
+rootTk.mainloop()
