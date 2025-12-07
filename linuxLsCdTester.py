@@ -1,6 +1,5 @@
 import tkinter as tk
 import random
-import time
 
 termName = "root"
 score = 0
@@ -167,6 +166,7 @@ def gameReset():
     instRootNodes = createRootNodes()
     targetLabel.place_forget()
     scoreLabel.place_forget()
+    resetScore()
     createTarget(instRootNodes)
 def updateTarget():
     global instRootNodes, currentTargetStr
